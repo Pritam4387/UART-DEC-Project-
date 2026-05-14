@@ -56,6 +56,7 @@ module uart_fifo_tb;
             write_to_fifo=1;
             read_from_fifo=1;
             write_data_in=i+100;
+            $display("write_data:%0d", write_data_in);
 
             @(posedge clk);
             write_to_fifo=0;
