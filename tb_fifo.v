@@ -39,12 +39,13 @@ module uart_fifo_tb;
                     write_data_in=i ;
                 end
             @(posedge clk) ;
-            write_to_fifo<=0 ;
+            write_to_fifo=0 ;
         end
         for (i=0 ; i<16 ; i=i+1) begin
             @(posedge clk);
             if(!empty) begin
                 read_from_fifo=1;
+             @(posedge clk);
                 $display("read_data:%0d", read_data_out);
             end
             @(posedge clk);
@@ -56,8 +57,7 @@ module uart_fifo_tb;
             write_to_fifo=1;
             read_from_fifo=1;
             write_data_in=i+100;
-            $display("write_data:%0d", write_data_in);
-
+            $display("write_data:%0d", i + 100);
             @(posedge clk);
             write_to_fifo=0;
             read_from_fifo=0;
