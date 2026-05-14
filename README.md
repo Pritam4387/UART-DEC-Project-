@@ -5,21 +5,18 @@ This project implements a **UART (Universal Asynchronous Receiver Transmitter) c
 
 UART enables **asynchronous serial communication** between devices without requiring a shared clock. Instead, both transmitter and receiver agree on a common **baud rate**. To improve timing accuracy and noise immunity, **16x oversampling** is used at the receiver side.
 
-The system includes:
-
+The framework of UART includes:
 - UART Transmitter
 - UART Receiver
 - FIFO Buffer
 - Baud Rate Generator
 - Button Debounce Circuit
 
-The project was tested using **PuTTY** for serial communication with FPGA hardware.
-
 ---
 
-# System Architecture
+# Workflow
 
-Laptop (PuTTY) ↔ UART Receiver → FIFO → Processing Unit (+1 Incrementor) → UART Transmitter ↔ Laptop (PuTTY)
+Laptop (PuTTY) -> UART Receiver -> FIFO -> Processing Unit (+1 Incrementor) -> UART Transmitter -> Laptop (PuTTY)
 
 The FPGA receives serial data from PuTTY, stores it in FIFO, increments the received value by **1**, and transmits it back to the laptop.
 
@@ -44,7 +41,7 @@ The transmitter converts **parallel input data** into **serial data** and sends 
 ## States
 1. **Idle** → TX line high
 2. **Start** → TX line low
-3. **Data** → Sends bits (LSB first)
+3. **Data** → Sends bits 
 4. **Stop** → TX line high
 5. Return to Idle
 
@@ -85,7 +82,7 @@ Each frame contains:
 
 - **Idle Bit** → Logic High
 - **Start Bit** → Logic Low
-- **8 Data Bits** (LSB first)
+- **8 Data Bits** 
 - **Parity Bit** → Not used
 - **Stop Bit** → Logic High
 
@@ -164,7 +161,7 @@ Mechanical buttons create unwanted transitions (bouncing).
 The debounce circuit ensures only stable button presses are detected by:
 
 - Counting stable clock cycles
-- Updating output only after sufficient stability
+- Updating output only after sufficient clocks cycles are passed
 
 ---
 
@@ -184,16 +181,15 @@ Waveforms were analyzed using simulation tools.
 
 # Demonstration
 
-The complete design was demonstrated on FPGA hardware before **Dr. Srinivas Boppu**.
+The complete design was demonstrated on FPGA hardware to **Dr. Srinivas Boppu**.
 
-Communication flow:
-
+Dataflow:
 1. Laptop sends data via PuTTY
 2. FPGA receives data
 3. Data stored in FIFO
 4. FPGA increments received value by **1**
 5. Result transmitted back to laptop
-6. PuTTY displays updated value
+6. PuTTY displays incremented value
 
 ---
 
@@ -204,13 +200,19 @@ This project helped understand:
 - Serial-to-parallel conversion
 - Parallel-to-serial conversion
 - UART timing synchronization
-- Oversampling for noise immunity
+- Oversampling
 - FIFO memory management
 - Baud rate generation
-- Hardware debouncing
-- FPGA-based serial communication
 
 ---
+# Tools and Technologies Used
+
+- Verilog HDL
+- Xilinx Vivado
+- Icarus Verilog
+- GTKWave
+- Basys3 FPGA Board
+- PuTTY Serial Terminal
 
 # Conclusion
 
